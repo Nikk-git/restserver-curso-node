@@ -1,46 +1,30 @@
 const express = require('express')
+const mongoose = require('mongoose')
+
 const app = express()
-const bodyParser = require('body-parser')
+
 require('./config/config')
 
+const bodyParser = require('body-parser')
+
+
+// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
 app.use(bodyParser.json())
 
-app.get('/usuario/', (req, res) => {
-    res.json('get Usuario')
-})
+app.use(require('./routes/users'))
 
-app.post('/usuario', (req, res) => {
 
-    let body = req.body
+mongoose.connect('mongodb://localhost:27017/Coffee_Hater', { useNewUrlParser: true, useUnifiedTopology: true }, (err, res) => {
 
-    if (body.name === undefined) {
+    if (err) throw err
 
-        res.status(400).json({
-            ok: false,
-            message: "El nombre es necesario"
-        })
-    }
-
-    res.json({
-        usuario: body
-    })
-})
-
-app.put('/usuario/:id', (req, res) => {
-
-    let id = req.params.id
-
-    res.json({
-        id
-    })
-})
-
-app.delete('/usuario', (req, res) => {
-    res.json('delete Usuario')
+    console.log('DataBase ONLINE');
 })
 
 
 app.listen(process.env.PORT, () => {
-    console.log('Escuchando puerto', process.env.PORT)
+    console.log('Listening port', process.env.PORT)
 })
