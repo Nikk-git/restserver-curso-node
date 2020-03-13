@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'dev') {
 
     urlDB = 'mongodb://localhost:27017/Coffee-Hater'
 } else {
-    urlDB = 'mongodb+srv://deadpool:A190WNNO5tHMBiwO@cluster0-vqa3p.mongodb.net/Coffee-Hater'
+    urlDB = process.env.MONGO_URI
 }
 
 process.env.URLDB = urlDB
