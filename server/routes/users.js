@@ -7,13 +7,15 @@ const _ = require('underscore')
 
 const User = require('../models/user')
 
+const { tokenVerification, adminRoleVerification } = require('../middlewares/authentication')
+
 const app = express()
 
 
 mongoose.set('useFindAndModify', false)
 
 
-app.get('/user', (req, res) => {
+app.get('/user', tokenVerification, (req, res) => {
 
     let since = req.query.since || 0
     since = Number(since)
@@ -43,7 +45,7 @@ app.get('/user', (req, res) => {
 
 })
 
-app.post('/user', (req, res) => {
+app.post('/user', [tokenVerification, adminRoleVerification], (req, res) => {
 
     let body = req.body
 
@@ -70,7 +72,7 @@ app.post('/user', (req, res) => {
     })
 })
 
-app.put('/user/:id', (req, res) => {
+app.put('/user/:id', [tokenVerification, adminRoleVerification], (req, res) => {
 
     let id = req.params.id
 
@@ -95,7 +97,7 @@ app.put('/user/:id', (req, res) => {
 
 })
 
-app.delete('/user/:id', (req, res) => {
+app.delete('/user/:id', [tokenVerification, adminRoleVerification], (req, res) => {
 
     let id = req.params.id
 
